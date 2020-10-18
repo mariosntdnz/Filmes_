@@ -1,13 +1,16 @@
 package com.example.filmes_.filmes
 
+import android.service.autofill.Validators.not
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.netWork.model.ListaFilmes
 import com.example.filmes_.netWork.model.ListaGeneros
 import com.example.filmes_.netWork.repository.FilmesRepository
+import com.example.filmes_.util.ParseFilme
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -27,6 +30,10 @@ class FilmesViewModel : ViewModel() {
     val filmeClicado : LiveData<Filme>
         get() = _filmeClicado
 
+    private val _listaFilmes = MutableLiveData<List<FilmeModel?>?>()
+    val listaFilmes : LiveData<List<FilmeModel?>?>
+        get() = _listaFilmes
+
     private var _page : Int = 1
 
     init {
@@ -38,6 +45,7 @@ class FilmesViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _responseAllFilmes.value = filmesRepository.getAllMovies(page)
+                _listaFilmes.value = _responseAllFilmes?.value?.results?.map { ParseFilme.parseFilmeToModel(it!!) }
             }
             catch (e : Exception){
                 _responseAllFilmes.value = null
@@ -56,10 +64,10 @@ class FilmesViewModel : ViewModel() {
         }
     }
 
-    fun insertFavorite(filme : Filme){
-        _responseAllFilmes.value?.results?.map {
-            if(it?.id == filme.id){
-                it.favorite = !it.favorite!!
+    fun insertFavorite(filmeModel : FilmeModel){
+        _listaFilmes.value?.map {
+            if(filmeModel.id == it?.id){
+                it.favorite.postValue(!it.favorite.value!!)
             }
         }
     }
@@ -76,3 +84,4 @@ class FilmesViewModel : ViewModel() {
         _page = page
     }
 }
+

@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.filmes_.R
+import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.filmes.FilmesAdapter
 import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.netWork.model.ListaFilmes
 
 @BindingAdapter("dataRecyclerView")
-fun bindRecyclerViewData(recyclerView: RecyclerView, data : List<Filme>?){
+fun bindRecyclerViewData(recyclerView: RecyclerView, data : List<FilmeModel>?){
     val adapter = recyclerView.adapter as FilmesAdapter
     adapter.submitList(data)
 }

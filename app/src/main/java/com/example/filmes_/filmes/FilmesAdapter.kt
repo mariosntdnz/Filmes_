@@ -7,24 +7,27 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmes_.databinding.FilmesItemBinding
+import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.model.Filme
+import com.example.filmes_.util.ParseFilme
 import kotlinx.android.synthetic.main.filmes_item.view.*
 
-class FilmesAdapter(private val onClickListener: OnClickListener, private val lifecycle: LifecycleOwner) : ListAdapter<Filme,FilmesAdapter.FilmeViewHolder>(DiffCallback){
+class FilmesAdapter(private val onClickListener: OnClickListener,private val lifecycle: LifecycleOwner) : ListAdapter<FilmeModel,FilmesAdapter.FilmeViewHolder>(DiffCallback){
 
     class FilmeViewHolder(val binding : FilmesItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(filme : Filme){
-            binding.filme = filme
+        fun bind(filmeModel : FilmeModel,lifecycle: LifecycleOwner){
+            binding.filmeModel = filmeModel
+            binding.lifecycleOwner = lifecycle
             binding.executePendingBindings()
         }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<Filme>() {
-        override fun areItemsTheSame(oldItem: Filme , newItem: Filme): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<FilmeModel>() {
+        override fun areItemsTheSame(oldItem: FilmeModel , newItem: FilmeModel): Boolean {
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: Filme, newItem: Filme): Boolean {
+        override fun areContentsTheSame(oldItem: FilmeModel, newItem: FilmeModel): Boolean {
             return oldItem.id == newItem.id
         }
     }
@@ -37,20 +40,20 @@ class FilmesAdapter(private val onClickListener: OnClickListener, private val li
     }
 
     override fun onBindViewHolder(holder: FilmeViewHolder, position: Int) {
-        val filme = getItem(position)
+        val filmeModel = getItem(position)
 
         holder.itemView.imageViewFotoCelular.setOnClickListener {
-            onClickListener.onClick(filme)
+            onClickListener.onClick(ParseFilme.parseModelToFilme(filmeModel))
         }
         holder.itemView.imageViewFavoriteRecy.setOnClickListener {
-            onClickListener.onClickFavorite(filme)
+            onClickListener.onClickFavorite(filmeModel)
         }
 
-        holder.bind(filme)
+        holder.bind(filmeModel,lifecycle)
     }
 
-    class OnClickListener(val clickListener: (filme:Filme) -> Unit, val clickFavotite : (filme : Filme) -> Unit) {
+    class OnClickListener(val clickListener: (filme:Filme) -> Unit, val clickFavotite : (filmeModel : FilmeModel) -> Unit) {
         fun onClick(filme:Filme) = clickListener(filme)
-        fun onClickFavorite(filme: Filme) = clickFavotite(filme)
+        fun onClickFavorite(filmeModel: FilmeModel) = clickFavotite(filmeModel)
     }
 }

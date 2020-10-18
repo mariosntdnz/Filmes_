@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="filme"
-            type="com.example.filmes_.netWork.model.Filme" />
+            name="filmeModel"
+            type="com.example.filmes_.domain.FilmeModel" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +33,7 @@
                 android:id="@+id/imageViewFotoCelular"
                 android:layout_width="0dp"
                 android:layout_height="260dp"
-                app:getImageFromUrl="@{filme.poster_path}"
+                app:getImageFromUrl="@{filmeModel.poster_path}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:text="@{filme.title}"
+                android:text="@{filmeModel.title}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageViewFavoriteRecy"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewFotoCelular"
-                app:isFavorite="@{filme.favorite}" />
+                app:isFavorite="@{filmeModel.favorite}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
