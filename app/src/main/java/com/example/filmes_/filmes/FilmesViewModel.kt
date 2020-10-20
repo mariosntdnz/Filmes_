@@ -30,6 +30,10 @@ class FilmesViewModel : ViewModel() {
     val filmeClicado : LiveData<Filme>
         get() = _filmeClicado
 
+    private val _lastFilme = MutableLiveData<Filme>()
+    val lastFilme : LiveData<Filme>
+        get() = _lastFilme
+
     private val _listaFilmes = MutableLiveData<List<FilmeModel?>?>()
     val listaFilmes : LiveData<List<FilmeModel?>?>
         get() = _listaFilmes
@@ -76,12 +80,24 @@ class FilmesViewModel : ViewModel() {
         _filmeClicado.value = filme
     }
 
-    fun nagationTelaDetalhes(){
+    fun nagationTelaDetalhes() {
+        _lastFilme.value = _filmeClicado.value
         _filmeClicado.value = null
+    }
+
+    fun attListFilmeVoltaDetalhes(){
+        var filmeModel = ParseFilme.parseFilmeToModel(_lastFilme.value!!)
+        _listaFilmes.value?.map {
+            if (filmeModel.id == it?.id){
+                it.favorite.value = filmeModel.favorite.value
+            }
+        }
     }
 
     fun setPage(page : Int){
         _page = page
     }
+    /*var index = _listaFilmes.value?.indexOfFirst { it?.id == filmeModel.id }
+    _listaFilmes.value?.get(index!!)?.favorite?.value = !_listaFilmes.value?.get(index!!)?.favorite?.value!!*/
 }
 

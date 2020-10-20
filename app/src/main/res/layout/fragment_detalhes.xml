@@ -8,8 +8,8 @@
             name="viewModel"
             type="com.example.filmes_.detalhes.DetalhesViewModel"/>
         <variable
-            name="filme"
-            type="com.example.filmes_.netWork.model.Filme"/>
+            name="filmeModel"
+            type="com.example.filmes_.domain.FilmeModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="32dp"
-            app:getImageFromUrl="@{filme.poster_path}"
+            app:getImageFromUrl="@{filmeModel.poster_path}"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@{filme.overview}"
+            android:text="@{filmeModel.overview}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            app:isFavorite="@{filme.favorite}"
+            app:isFavorite="@{filmeModel.favorite}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewSinopse" />
 

@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.filmes_.databinding.FragmentDetalhesBinding
 import com.example.filmes_.netWork.model.Filme
+import com.example.filmes_.util.ParseFilme
+import kotlinx.android.synthetic.main.fragment_detalhes.*
 
 class DetalhesFragment : Fragment() {
 
@@ -22,14 +24,19 @@ class DetalhesFragment : Fragment() {
     ): View? {
 
         val binding = FragmentDetalhesBinding.inflate(inflater,container,false)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        var filmeModel = ParseFilme.parseFilmeToModel(DetalhesFragmentArgs.fromBundle(requireArguments()).filme)
+        binding.filmeModel = filmeModel
 
-        binding.apply {
-            lifecycleOwner = this@DetalhesFragment
-            viewModel = this@DetalhesFragment.viewModel
-            filme = DetalhesFragmentArgs.fromBundle(requireArguments()).filme
+        binding.imageViewFavorito.setOnClickListener {
+            filmeModel.favorite.value = !filmeModel.favorite.value!!
+            setFilmeFavorite()
         }
 
         return binding.root
     }
-
+    fun setFilmeFavorite(){
+        DetalhesFragmentArgs.fromBundle(requireArguments()).filme.favorite = !DetalhesFragmentArgs.fromBundle(requireArguments()).filme.favorite!!
+    }
 }

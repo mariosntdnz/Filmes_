@@ -27,6 +27,9 @@ class FilmesFragment : Fragment() {
             {viewModel.insertFavorite(it)}
         ),viewLifecycleOwner)
 
+        viewModel.lastFilme.observe(viewLifecycleOwner, Observer {
+            viewModel.attListFilmeVoltaDetalhes()
+        })
 
         viewModel.filmeClicado.observe(viewLifecycleOwner, Observer{
             it?.let {

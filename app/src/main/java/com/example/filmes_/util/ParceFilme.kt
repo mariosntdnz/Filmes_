@@ -14,7 +14,7 @@ class ParseFilme() {
             filme.genre_ids,
             filme.title,
             filme.overview,
-            MutableLiveData<Boolean?>().apply { postValue(filme.favorite) }
+            MutableLiveData<Boolean?>().apply { value = filme.favorite }
         )
 
         fun parseModelToFilme(filmeModel: FilmeModel) = Filme(
