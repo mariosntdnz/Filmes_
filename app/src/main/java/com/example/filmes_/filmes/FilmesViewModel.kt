@@ -68,12 +68,9 @@ class FilmesViewModel : ViewModel() {
         }
     }
 
-    fun insertFavorite(filmeModel : FilmeModel){
-        _listaFilmes.value?.map {
-            if(filmeModel.id == it?.id){
-                it.favorite.postValue(!it.favorite.value!!)
-            }
-        }
+    fun updateFavorite(filmeModel : FilmeModel){
+        var index = _listaFilmes.value?.indexOfFirst { it?.id == filmeModel.id }
+        _listaFilmes.value?.get(index!!)?.favorite?.value = !_listaFilmes.value?.get(index!!)?.favorite?.value!!
     }
 
     fun setFilmeClicado(filme : Filme){
@@ -87,17 +84,12 @@ class FilmesViewModel : ViewModel() {
 
     fun attListFilmeVoltaDetalhes(){
         var filmeModel = ParseFilme.parseFilmeToModel(_lastFilme.value!!)
-        _listaFilmes.value?.map {
-            if (filmeModel.id == it?.id){
-                it.favorite.value = filmeModel.favorite.value
-            }
-        }
+        var index = _listaFilmes.value?.indexOfFirst { it?.id == filmeModel.id }
+        _listaFilmes.value?.get(index!!)?.favorite?.value = filmeModel.favorite.value
     }
 
     fun setPage(page : Int){
         _page = page
     }
-    /*var index = _listaFilmes.value?.indexOfFirst { it?.id == filmeModel.id }
-    _listaFilmes.value?.get(index!!)?.favorite?.value = !_listaFilmes.value?.get(index!!)?.favorite?.value!!*/
 }
 

@@ -24,7 +24,7 @@ class FilmesFragment : Fragment() {
         binding.viewModel = viewModel
         binding.recyclerViewFilmes.adapter = FilmesAdapter(FilmesAdapter.OnClickListener(
             {viewModel.setFilmeClicado(it)},
-            {viewModel.insertFavorite(it)}
+            {viewModel.updateFavorite(it)}
         ),viewLifecycleOwner)
 
         viewModel.lastFilme.observe(viewLifecycleOwner, Observer {
