@@ -5,8 +5,13 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.map
 import com.example.filmes_.databinding.FragmentFilmesBinding
+import com.example.filmes_.util.ParseFilme
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class FilmesFragment : Fragment() {
 
@@ -26,6 +31,12 @@ class FilmesFragment : Fragment() {
             {viewModel.setFilmeClicado(it)},
             {viewModel.updateFavorite(it)}
         ),viewLifecycleOwner)
+
+        lifecycleScope.launch {
+            viewModel.dataFilmes.collect {
+                (binding.recyclerViewFilmes.adapter as FilmesAdapter).submitData(it.map { ParseFilme.parseFilmeToModel(it) })
+            }
+        }
 
         viewModel.lastFilme.observe(viewLifecycleOwner, Observer {
             viewModel.attListFilmeVoltaDetalhes()

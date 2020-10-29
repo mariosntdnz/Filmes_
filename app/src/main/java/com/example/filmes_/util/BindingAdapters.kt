@@ -15,8 +15,10 @@ import com.example.filmes_.netWork.model.ListaFilmes
 
 @BindingAdapter("dataRecyclerView")
 fun bindRecyclerViewData(recyclerView: RecyclerView, data : List<FilmeModel>?){
-    val adapter = recyclerView.adapter as FilmesAdapter
-    adapter.submitList(data)
+    //val adapter = recyclerView.adapter as FilmesAdapter
+    //adapter.submitList(data)
+
+    //app:dataRecyclerView="@{viewModel.listaFilmes}"
 }
 
 @BindingAdapter("getImageFromUrl")

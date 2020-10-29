@@ -6,11 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.example.filmes_.databinding.FragmentDetalhesBinding
-import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.util.ParseFilme
-import kotlinx.android.synthetic.main.fragment_detalhes.*
 
 class DetalhesFragment : Fragment() {
 

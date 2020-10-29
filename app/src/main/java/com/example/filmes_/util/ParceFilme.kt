@@ -1,6 +1,7 @@
 package com.example.filmes_.util
 
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagingData
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.model.Filme
 

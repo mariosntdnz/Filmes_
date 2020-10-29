@@ -1,11 +1,14 @@
-package com.example.filmes_.filmes
+ package com.example.filmes_.filmes
 
-import android.service.autofill.Validators.not
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.example.filmes_.domain.FilmeModel
+import com.example.filmes_.netWork.PostDataSource
 import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.netWork.model.ListaFilmes
 import com.example.filmes_.netWork.model.ListaGeneros
@@ -38,23 +41,27 @@ class FilmesViewModel : ViewModel() {
     val listaFilmes : LiveData<List<FilmeModel?>?>
         get() = _listaFilmes
 
-    private var _page : Int = 1
+    val dataFilmes = Pager(PagingConfig(pageSize = 6)) {
+        PostDataSource(filmesRepository)
+    }.flow.cachedIn(viewModelScope)
+
 
     init {
-        getAllFilmes(_page)
+        getAllFilmes()
         getAllGeneros()
     }
 
-    private fun getAllFilmes(page : Int){
-        viewModelScope.launch {
+    private fun getAllFilmes(){
+
+        /*viewModelScope.launch {
             try {
-                _responseAllFilmes.value = filmesRepository.getAllMovies(page)
+                _responseAllFilmes.value = filmesRepository.getAllMovies()
                 _listaFilmes.value = _responseAllFilmes?.value?.results?.map { ParseFilme.parseFilmeToModel(it!!) }
             }
             catch (e : Exception){
                 _responseAllFilmes.value = null
             }
-        }
+        }*/
     }
 
     private fun getAllGeneros(){
@@ -88,8 +95,5 @@ class FilmesViewModel : ViewModel() {
         _listaFilmes.value?.get(index!!)?.favorite?.value = filmeModel.favorite.value
     }
 
-    fun setPage(page : Int){
-        _page = page
-    }
 }
 
