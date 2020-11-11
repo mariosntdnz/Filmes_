@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.filmes_.databinding.FilmesItemBinding
@@ -13,12 +12,12 @@ import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.util.ParseFilme
 import kotlinx.android.synthetic.main.filmes_item.view.*
 
-class FilmesAdapter(private val onClickListener: OnClickListener,private val lifecycle: LifecycleOwner) : PagingDataAdapter<FilmeModel,FilmesAdapter.FilmeViewHolder>(DiffCallback){
+class FilmesAdapter(private val onClickListener: OnClickListener) : PagingDataAdapter<FilmeModel,FilmesAdapter.FilmeViewHolder>(DiffCallback){
 
     class FilmeViewHolder(val binding : FilmesItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(filmeModel : FilmeModel,lifecycle: LifecycleOwner){
+        fun bind(filmeModel : FilmeModel){
             binding.filmeModel = filmeModel
-            binding.lifecycleOwner = lifecycle
+            binding.lifecycleOwner = itemView.context as LifecycleOwner
             binding.executePendingBindings()
         }
     }
@@ -44,13 +43,13 @@ class FilmesAdapter(private val onClickListener: OnClickListener,private val lif
         val filmeModel = getItem(position)
 
         holder.itemView.imageViewFotoCelular.setOnClickListener {
-            onClickListener.onClick(ParseFilme.parseModelToFilme(filmeModel!!))
+            ParseFilme.parseModelToFilme(filmeModel!!)?.let { it1 -> onClickListener.onClick(it1) }
         }
         holder.itemView.imageViewFavoriteRecy.setOnClickListener {
             onClickListener.onClickFavorite(filmeModel!!)
         }
 
-        holder.bind(filmeModel!!,lifecycle)
+        holder.bind(filmeModel!!)
     }
 
     class OnClickListener(val clickListener: (filme:Filme) -> Unit, val clickFavotite : (filmeModel : FilmeModel) -> Unit) {

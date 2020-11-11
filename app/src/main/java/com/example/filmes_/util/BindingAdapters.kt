@@ -1,7 +1,6 @@
 package com.example.filmes_.util
 
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,9 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.filmes_.R
 import com.example.filmes_.domain.FilmeModel
-import com.example.filmes_.filmes.FilmesAdapter
-import com.example.filmes_.netWork.model.Filme
-import com.example.filmes_.netWork.model.ListaFilmes
 
 @BindingAdapter("dataRecyclerView")
 fun bindRecyclerViewData(recyclerView: RecyclerView, data : List<FilmeModel>?){

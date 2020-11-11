@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.example.filmes_.databinding.FragmentDetalhesBinding
 import com.example.filmes_.util.ParseFilme
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 
 class DetalhesFragment : Fragment() {
 
@@ -27,7 +29,9 @@ class DetalhesFragment : Fragment() {
         binding.filmeModel = filmeModel
 
         binding.imageViewFavorito.setOnClickListener {
-            filmeModel.favorite.value = !filmeModel.favorite.value!!
+            if (filmeModel != null) {
+                filmeModel.favorite.value = !filmeModel.favorite.value!!
+            }
             setFilmeFavorite()
         }
 

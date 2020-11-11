@@ -30,17 +30,13 @@ class FilmesFragment : Fragment() {
         binding.recyclerViewFilmes.adapter = FilmesAdapter(FilmesAdapter.OnClickListener(
             {viewModel.setFilmeClicado(it)},
             {viewModel.updateFavorite(it)}
-        ),viewLifecycleOwner)
+        ))
 
         lifecycleScope.launch {
             viewModel.dataFilmes.collect {
-                (binding.recyclerViewFilmes.adapter as FilmesAdapter).submitData(it.map { ParseFilme.parseFilmeToModel(it) })
+                (binding.recyclerViewFilmes.adapter as FilmesAdapter).submitData(it)
             }
         }
-
-        viewModel.lastFilme.observe(viewLifecycleOwner, Observer {
-            viewModel.attListFilmeVoltaDetalhes()
-        })
 
         viewModel.filmeClicado.observe(viewLifecycleOwner, Observer{
             it?.let {

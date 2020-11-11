@@ -1,16 +1,24 @@
 package com.example.filmes_.netWork
 
 import androidx.paging.PagingSource
+import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.netWork.repository.FilmesRepository
+import com.example.filmes_.util.ParseFilme
+import kotlinx.coroutines.flow.flow
 
-class PostDataSource(private val apiService: FilmesRepository) : PagingSource<Int, Filme>() {
+class PostDataSource(private val apiService: FilmesRepository) : PagingSource<Int, FilmeModel>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Filme> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, FilmeModel> {
         try {
+
             val currentLoadingPageKey = params.key ?: 1
-            val response = apiService.getAllMovies(currentLoadingPageKey).results
-            val responseData = mutableListOf<Filme>()
+            val response = apiService.getAllMovies(currentLoadingPageKey).results?.map {
+                ParseFilme.parseFilmeToModel(it)
+            }
+
+            val responseData = mutableListOf<FilmeModel>()
+
             response?.map {
                 responseData.add(it!!)
             }

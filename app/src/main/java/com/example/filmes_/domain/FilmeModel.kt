@@ -8,5 +8,5 @@ data class FilmeModel(
     val genre_ids : List<Int?>?,
     val title : String?,
     val overview : String?,
-    var favorite : MutableLiveData<Boolean?>
+    var favorite : MutableLiveData<Boolean?> = MutableLiveData(false)
 )

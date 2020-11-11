@@ -14,16 +14,13 @@ import com.example.filmes_.netWork.model.ListaFilmes
 import com.example.filmes_.netWork.model.ListaGeneros
 import com.example.filmes_.netWork.repository.FilmesRepository
 import com.example.filmes_.util.ParseFilme
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class FilmesViewModel : ViewModel() {
 
     private val filmesRepository = FilmesRepository()
-
-    private val _responseAllFilmes = MutableLiveData<ListaFilmes?>()
-    val responseAllFilmes : LiveData<ListaFilmes?>
-        get() = _responseAllFilmes
 
     private val _responseGeneros = MutableLiveData<ListaGeneros?>()
     val responseGeneros : LiveData<ListaGeneros?>
@@ -37,31 +34,12 @@ class FilmesViewModel : ViewModel() {
     val lastFilme : LiveData<Filme>
         get() = _lastFilme
 
-    private val _listaFilmes = MutableLiveData<List<FilmeModel?>?>()
-    val listaFilmes : LiveData<List<FilmeModel?>?>
-        get() = _listaFilmes
-
-    val dataFilmes = Pager(PagingConfig(pageSize = 6)) {
+    var dataFilmes = Pager(PagingConfig(pageSize = 6)) {
         PostDataSource(filmesRepository)
     }.flow.cachedIn(viewModelScope)
 
-
     init {
-        getAllFilmes()
         getAllGeneros()
-    }
-
-    private fun getAllFilmes(){
-
-        /*viewModelScope.launch {
-            try {
-                _responseAllFilmes.value = filmesRepository.getAllMovies()
-                _listaFilmes.value = _responseAllFilmes?.value?.results?.map { ParseFilme.parseFilmeToModel(it!!) }
-            }
-            catch (e : Exception){
-                _responseAllFilmes.value = null
-            }
-        }*/
     }
 
     private fun getAllGeneros(){
@@ -76,8 +54,16 @@ class FilmesViewModel : ViewModel() {
     }
 
     fun updateFavorite(filmeModel : FilmeModel){
-        var index = _listaFilmes.value?.indexOfFirst { it?.id == filmeModel.id }
-        _listaFilmes.value?.get(index!!)?.favorite?.value = !_listaFilmes.value?.get(index!!)?.favorite?.value!!
+        viewModelScope.launch {
+            ParseFilme.parseModelToFilme(filmeModel)?.let {
+                filmesRepository.insertFilmeFavoritado(
+                    it
+                )
+            }
+        }
+
+        filmeModel.favorite.postValue(!filmeModel.favorite.value!!)
+
     }
 
     fun setFilmeClicado(filme : Filme){
@@ -87,12 +73,6 @@ class FilmesViewModel : ViewModel() {
     fun nagationTelaDetalhes() {
         _lastFilme.value = _filmeClicado.value
         _filmeClicado.value = null
-    }
-
-    fun attListFilmeVoltaDetalhes(){
-        var filmeModel = ParseFilme.parseFilmeToModel(_lastFilme.value!!)
-        var index = _listaFilmes.value?.indexOfFirst { it?.id == filmeModel.id }
-        _listaFilmes.value?.get(index!!)?.favorite?.value = filmeModel.favorite.value
     }
 
 }
