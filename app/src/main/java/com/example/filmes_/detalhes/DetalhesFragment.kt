@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import com.example.filmes_.databinding.FragmentDetalhesBinding
 import com.example.filmes_.util.ParseFilme
@@ -29,15 +32,11 @@ class DetalhesFragment : Fragment() {
         binding.filmeModel = filmeModel
 
         binding.imageViewFavorito.setOnClickListener {
-            if (filmeModel != null) {
-                filmeModel.favorite.value = !filmeModel.favorite.value!!
-            }
-            setFilmeFavorite()
+            filmeModel?.favorite?.value = !filmeModel?.favorite?.value!!
+            DetalhesFragmentArgs.fromBundle(requireArguments()).filme.favorite = filmeModel.favorite.value
+            setFragmentResult("filme_KEY", bundleOf("filme" to DetalhesFragmentArgs.fromBundle(requireArguments()).filme))
         }
 
         return binding.root
-    }
-    fun setFilmeFavorite(){
-        DetalhesFragmentArgs.fromBundle(requireArguments()).filme.favorite = !DetalhesFragmentArgs.fromBundle(requireArguments()).filme.favorite!!
     }
 }

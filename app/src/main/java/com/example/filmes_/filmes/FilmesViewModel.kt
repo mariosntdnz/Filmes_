@@ -1,12 +1,8 @@
- package com.example.filmes_.filmes
+package com.example.filmes_.filmes
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.cachedIn
+import androidx.lifecycle.*
+import androidx.paging.*
+import com.example.filmes_.database.entity.FilmeEntity
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.PostDataSource
 import com.example.filmes_.netWork.model.Filme
@@ -14,7 +10,7 @@ import com.example.filmes_.netWork.model.ListaFilmes
 import com.example.filmes_.netWork.model.ListaGeneros
 import com.example.filmes_.netWork.repository.FilmesRepository
 import com.example.filmes_.util.ParseFilme
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -34,11 +30,14 @@ class FilmesViewModel : ViewModel() {
     val lastFilme : LiveData<Filme>
         get() = _lastFilme
 
-    var dataFilmes = Pager(PagingConfig(pageSize = 6)) {
-        PostDataSource(filmesRepository)
-    }.flow.cachedIn(viewModelScope)
+    var dataFilmes : Flow<PagingData<FilmeModel>>
 
     init {
+
+        dataFilmes = Pager(PagingConfig(pageSize = 6)) {
+            PostDataSource(filmesRepository)
+        }.flow.cachedIn(viewModelScope)
+
         getAllGeneros()
     }
 
@@ -54,16 +53,23 @@ class FilmesViewModel : ViewModel() {
     }
 
     fun updateFavorite(filmeModel : FilmeModel){
-        viewModelScope.launch {
-            ParseFilme.parseModelToFilme(filmeModel)?.let {
-                filmesRepository.insertFilmeFavoritado(
-                    it
-                )
-            }
-        }
+        updateFavoriteBD(filmeModel)
+        updateFavoriteFilme(filmeModel)
+    }
 
+    private fun insertFilmeFavoritado(filme : FilmeModel) = viewModelScope.launch { filmesRepository.insertFilmeFavoritado(filme) }
+
+    private fun deleteFilmeFavoritado(filme : FilmeModel) = viewModelScope.launch { filmesRepository.deleteFilmeFavoritado(filme) }
+
+    private fun updateFavoriteBD(filmeModel : FilmeModel){
+
+        if(filmeModel.favorite.value!!) insertFilmeFavoritado(filmeModel)
+        else deleteFilmeFavoritado(filmeModel)
+
+    }
+
+    private fun updateFavoriteFilme(filmeModel: FilmeModel) {
         filmeModel.favorite.postValue(!filmeModel.favorite.value!!)
-
     }
 
     fun setFilmeClicado(filme : Filme){

@@ -2,6 +2,7 @@ package com.example.filmes_.netWork.repository
 
 import com.example.filmes_.core.MyApplication
 import com.example.filmes_.database.entity.FilmeEntity
+import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.FilmesRestService
 import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.netWork.model.ListaFilmes
@@ -42,14 +43,25 @@ class FilmesRepository {
         }
     }
 
-    fun insertFilmeFavoritado(filme: Filme) {
+    fun insertFilmeFavoritado(filme: FilmeModel) {
         bd.insertFilmeFavoritado(
             FilmeEntity(
                 filme.id,
                 filme.poster_path,
                 filme.title,
                 filme.overview,
-                filme.favorite
+                filme.favorite.value
+            )
+        )
+    }
+    fun deleteFilmeFavoritado(filme: FilmeModel) {
+        bd.deleteFilmeFavoritado(
+            FilmeEntity(
+                filme.id,
+                filme.poster_path,
+                filme.title,
+                filme.overview,
+                filme.favorite.value
             )
         )
     }

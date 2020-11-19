@@ -52,6 +52,19 @@ class FilmesAdapter(private val onClickListener: OnClickListener) : PagingDataAd
         holder.bind(filmeModel!!)
     }
 
+    fun updateItem(filmeModel: FilmeModel){
+        var position = 0
+
+        for(i in 0..itemCount-1){
+            if(getItem(i)?.id == filmeModel.id){
+                getItem(i)?.favorite?.postValue(filmeModel.favorite.value)
+                position = i
+            }
+        }
+
+        notifyItemChanged(position)
+    }
+
     class OnClickListener(val clickListener: (filme:Filme) -> Unit, val clickFavotite : (filmeModel : FilmeModel) -> Unit) {
         fun onClick(filme:Filme) = clickListener(filme)
         fun onClickFavorite(filmeModel: FilmeModel) = clickFavotite(filmeModel)
