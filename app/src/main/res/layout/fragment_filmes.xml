@@ -6,14 +6,14 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.filmes_.filmes.FilmesViewModel"/>
+            type="com.example.filmes_.ui.filmes.FilmesViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".filmes.FilmesFragment">
+        tools:context=".ui.filmes.FilmesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewFilmes"

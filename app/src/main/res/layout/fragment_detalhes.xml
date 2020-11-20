@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.filmes_.detalhes.DetalhesViewModel"/>
+            type="com.example.filmes_.ui.detalhes.DetalhesViewModel"/>
         <variable
             name="filmeModel"
             type="com.example.filmes_.domain.FilmeModel"/>
@@ -16,7 +16,7 @@
         android:id="@+id/Constraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".detalhes.DetalhesFragment">
+        tools:context=".ui.detalhes.DetalhesFragment">
 
         <ImageView
             android:id="@+id/imageViewPoster"

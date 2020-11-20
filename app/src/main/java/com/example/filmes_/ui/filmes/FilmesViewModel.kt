@@ -1,15 +1,12 @@
-package com.example.filmes_.filmes
+package com.example.filmes_.ui.filmes
 
 import androidx.lifecycle.*
 import androidx.paging.*
-import com.example.filmes_.database.entity.FilmeEntity
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.PostDataSource
 import com.example.filmes_.netWork.model.Filme
-import com.example.filmes_.netWork.model.ListaFilmes
 import com.example.filmes_.netWork.model.ListaGeneros
 import com.example.filmes_.netWork.repository.FilmesRepository
-import com.example.filmes_.util.ParseFilme
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.lang.Exception
