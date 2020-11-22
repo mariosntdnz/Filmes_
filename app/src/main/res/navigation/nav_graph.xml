@@ -8,22 +8,38 @@
     <fragment
         android:id="@+id/filmesFragment"
         android:name="com.example.filmes_.ui.filmes.FilmesFragment"
-        android:label="FilmesFragment"
+        android:label="Filmes"
         tools:layout="@layout/fragment_filmes">
         <action
             android:id="@+id/action_filmesFragment_to_detalhesFragment"
             app:destination="@id/detalhesFragment"/>
+        <action
+            android:id="@+id/action_filmesFragment_to_favoritosFragment"
+            app:destination="@id/favoritosFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/detalhesFragment"
         android:name="com.example.filmes_.ui.detalhes.DetalhesFragment"
-        android:label="DetalhesFragment"
+        android:label="{filme_title}"
         tools:layout="@layout/fragment_detalhes">
         <argument
             android:name="filme"
             app:argType="com.example.filmes_.netWork.model.Filme"
             />
+        <argument
+            android:name="filme_title"
+            app:argType="string"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritosFragment"
+        android:name="com.example.filmes_.ui.favoritos.FavoritosFragment"
+        android:label="@string/favoritos"
+        tools:layout="@layout/fragment_favoritos" >
+        <action
+            android:id="@+id/action_favoritosFragment_to_detalhesFragment"
+            app:destination="@id/detalhesFragment" />
     </fragment>
 
 </navigation>

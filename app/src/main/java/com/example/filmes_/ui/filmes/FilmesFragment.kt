@@ -2,12 +2,14 @@ package com.example.filmes_.ui.filmes
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.filmes_.R
 import com.example.filmes_.databinding.FragmentFilmesBinding
 import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.util.ParseFilme
@@ -43,7 +45,7 @@ class FilmesFragment : Fragment() {
 
         viewModel.filmeClicado.observe(viewLifecycleOwner, Observer{
             it?.let {
-                this.findNavController().navigate(FilmesFragmentDirections.actionFilmesFragmentToDetalhesFragment(it))
+                this.findNavController().navigate(FilmesFragmentDirections.actionFilmesFragmentToDetalhesFragment(it,it.title!!))
                 viewModel.nagationTelaDetalhes()
             }
         })
@@ -53,16 +55,7 @@ class FilmesFragment : Fragment() {
             (binding.recyclerViewFilmes.adapter as FilmesAdapter).updateItem(ParseFilme.parseFilmeToModel(filmeNaVoltaDetalhes)!!)
         }
 
-        setHasOptionsMenu(true)
-
         return binding.root
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return true
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-    }
 }
