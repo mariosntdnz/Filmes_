@@ -16,7 +16,6 @@ class PostDataSourceBD(private val bdService: FilmesRepository) : PagingSource<I
             val response = bdService.getAllFilmesFavoritados()?.map {
                 ParseFilme.parseFilmeToModel(it)
             }
-            println("PDSBD >>  " + response?.isEmpty().toString())
             val responseData = mutableListOf<FilmeModel>()
 
             response?.map {
@@ -27,8 +26,8 @@ class PostDataSourceBD(private val bdService: FilmesRepository) : PagingSource<I
 
             return LoadResult.Page(
                 data = responseData,
-                prevKey = prevKey,
-                nextKey = currentLoadingPageKey.plus(1)
+                prevKey = null,
+                nextKey = null
             )
         } catch (e: Exception) {
             return LoadResult.Error(e)
