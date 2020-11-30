@@ -1,17 +1,17 @@
 package com.example.filmes_.netWork.repository
 
 import com.example.filmes_.core.MyApplication
+import com.example.filmes_.database.dao.FilmeDao
 import com.example.filmes_.database.entity.FilmeEntity
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.FilmesRestService
 import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.netWork.model.ListaFilmes
 import com.example.filmes_.netWork.model.ListaGeneros
-import com.example.hackatonbndes.database.AppDatabase
 import retrofit2.http.Query
 import java.lang.Exception
 
-class FilmesRepository {
+class FilmesRepository{
 
     private val api = FilmesRestService
     private val bd = MyApplication.database?.filmeDao()!!
@@ -64,5 +64,14 @@ class FilmesRepository {
                 filme.favorite.value
             )
         )
+    }
+
+    fun getAllFilmesFavoritados(): List<Filme?>? {
+        return bd.getAllFilmesFavoritados()?.map {
+            println("Entity ? >>>  " + it?.id)
+            it?.let {
+                Filme(it.id,it.poster_path,null,it.title,it.overview,it.favorite)
+            }
+        }
     }
 }

@@ -13,4 +13,7 @@ interface FilmeDao {
 
     @Query("SELECT * FROM filme WHERE filme_id = :filmeId ")
     fun searchFilme(filmeId : Int) : FilmeEntity?
+
+    @Query("SELECT * FROM filme")
+    fun getAllFilmesFavoritados() : List<FilmeEntity?>?
 }

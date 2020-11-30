@@ -1,26 +1,29 @@
-package com.example.filmes_.ui.filmes
+package com.example.filmes_.ui.favoritos
 
-import androidx.lifecycle.*
-import androidx.paging.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.PostDataSource
+import com.example.filmes_.netWork.PostDataSourceBD
 import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.netWork.model.ListaGeneros
 import com.example.filmes_.netWork.repository.FilmesRepository
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class FilmesViewModel : ViewModel() {
+class FavoritosViewModel : ViewModel(){
 
     private val filmesRepository = FilmesRepository()
 
-    private val _responseGeneros = MutableLiveData<ListaGeneros?>()
-    val responseGeneros : LiveData<ListaGeneros?>
-        get() = _responseGeneros
-
-    private val _filmeClicado = MutableLiveData<Filme?>()
-    val filmeClicado : MutableLiveData<Filme?>
+    private val _filmeClicado = MutableLiveData<Filme>()
+    val filmeClicado : LiveData<Filme>
         get() = _filmeClicado
 
     private val _lastFilme = MutableLiveData<Filme>()
@@ -32,26 +35,14 @@ class FilmesViewModel : ViewModel() {
     init {
 
         dataFilmes = Pager(PagingConfig(pageSize = 6)) {
-            PostDataSource(filmesRepository)
+            PostDataSourceBD(filmesRepository)
         }.flow.cachedIn(viewModelScope)
 
-        getAllGeneros()
-    }
-
-    private fun getAllGeneros(){
-        viewModelScope.launch {
-            try {
-                _responseGeneros.value = filmesRepository.getAllGenres()
-            }
-            catch (e : Exception){
-                _responseGeneros.value = null
-            }
-        }
     }
 
     fun updateFavorite(filmeModel : FilmeModel){
-        updateFavoriteFilme(filmeModel)
         updateFavoriteBD(filmeModel)
+        updateFavoriteFilme(filmeModel)
     }
 
     private fun insertFilmeFavoritado(filme : FilmeModel) = viewModelScope.launch { filmesRepository.insertFilmeFavoritado(filme) }
@@ -59,13 +50,14 @@ class FilmesViewModel : ViewModel() {
     private fun deleteFilmeFavoritado(filme : FilmeModel) = viewModelScope.launch { filmesRepository.deleteFilmeFavoritado(filme) }
 
     private fun updateFavoriteBD(filmeModel : FilmeModel){
+
         if(filmeModel.favorite.value!!) insertFilmeFavoritado(filmeModel)
         else deleteFilmeFavoritado(filmeModel)
 
     }
 
     private fun updateFavoriteFilme(filmeModel: FilmeModel) {
-        filmeModel.favorite.value = !filmeModel.favorite.value!!
+        filmeModel.favorite.postValue(!filmeModel.favorite.value!!)
     }
 
     fun setFilmeClicado(filme : Filme){
@@ -76,6 +68,4 @@ class FilmesViewModel : ViewModel() {
         _lastFilme.value = _filmeClicado.value
         _filmeClicado.value = null
     }
-
 }
-

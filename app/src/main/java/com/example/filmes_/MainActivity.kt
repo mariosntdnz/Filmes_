@@ -17,8 +17,8 @@ import com.example.filmes_.ui.filmes.FilmesFragmentDirections
 
 class MainActivity : AppCompatActivity() {
 
-    companion object{
-        lateinit var instance : MainActivity
+    companion object {
+        lateinit var instance: MainActivity
     }
 
     init {
@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        navControl = supportFragmentManager.fragments.find { it.id == R.id.nav_host_fragment }!!.findNavController()
+        navControl = supportFragmentManager.fragments.find { it.id == R.id.nav_host_fragment }!!
+            .findNavController()
         navGraph = navControl.graph
         appBarConfiguration = AppBarConfiguration(navGraph)
         setupActionBarWithNavController(navControl, appBarConfiguration)
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
+        return when (item.itemId) {
             R.id.filmes_favoritos -> {
                 supportFragmentManager.fragments[0].findNavController().navigate(
                     FilmesFragmentDirections.actionFilmesFragmentToFavoritosFragment()
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
     override fun onSupportNavigateUp(): Boolean {
         return navControl.navigateUp()
                 || super.onSupportNavigateUp()
