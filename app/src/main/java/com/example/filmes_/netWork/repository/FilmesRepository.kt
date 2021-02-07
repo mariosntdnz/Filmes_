@@ -1,20 +1,17 @@
 package com.example.filmes_.netWork.repository
 
-import androidx.lifecycle.viewModelScope
-import androidx.paging.*
 import com.example.filmes_.core.MyApplication
-import com.example.filmes_.database.dao.FilmeDao
 import com.example.filmes_.database.entity.FilmeEntity
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.FilmesRestService
-import com.example.filmes_.netWork.PostDataSourceBD
 import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.netWork.model.ListaFilmes
 import com.example.filmes_.netWork.model.ListaGeneros
 import com.example.filmes_.util.ParseFilme
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.transform
 import retrofit2.http.Query
-import java.lang.Exception
 
 class FilmesRepository{
 

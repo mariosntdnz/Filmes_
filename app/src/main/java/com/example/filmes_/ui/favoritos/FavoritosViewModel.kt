@@ -4,19 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.example.filmes_.domain.FilmeModel
-import com.example.filmes_.netWork.PostDataSource
-import com.example.filmes_.netWork.PostDataSourceBD
 import com.example.filmes_.netWork.model.Filme
-import com.example.filmes_.netWork.model.ListaGeneros
 import com.example.filmes_.netWork.repository.FilmesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class FavoritosViewModel : ViewModel(){
 
@@ -30,16 +22,11 @@ class FavoritosViewModel : ViewModel(){
     val lastFilme : LiveData<Filme>
         get() = _lastFilme
 
-    var dataFilmes : Flow<PagingData<FilmeModel>>
     var dataLisFilmes : Flow<List<FilmeModel?>>
 
     init {
 
         dataLisFilmes = filmesRepository.getAllFilmesFavoritados()
-
-        dataFilmes = Pager(PagingConfig(pageSize = 6)) {
-            PostDataSourceBD(filmesRepository)
-        }.flow.cachedIn(viewModelScope)
 
     }
 
