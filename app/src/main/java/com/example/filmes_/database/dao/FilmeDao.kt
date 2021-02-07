@@ -1,7 +1,9 @@
 package com.example.filmes_.database.dao
 
+import androidx.paging.PagingData
 import androidx.room.*
 import com.example.filmes_.database.entity.FilmeEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FilmeDao {
@@ -15,5 +17,5 @@ interface FilmeDao {
     fun searchFilme(filmeId : Int) : FilmeEntity?
 
     @Query("SELECT * FROM filme")
-    fun getAllFilmesFavoritados() : List<FilmeEntity?>?
+    fun getAllFilmesFavoritados() : Flow<List<FilmeEntity?>>
 }

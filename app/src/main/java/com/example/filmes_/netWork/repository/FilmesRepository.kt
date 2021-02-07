@@ -1,13 +1,18 @@
 package com.example.filmes_.netWork.repository
 
+import androidx.lifecycle.viewModelScope
+import androidx.paging.*
 import com.example.filmes_.core.MyApplication
 import com.example.filmes_.database.dao.FilmeDao
 import com.example.filmes_.database.entity.FilmeEntity
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.FilmesRestService
+import com.example.filmes_.netWork.PostDataSourceBD
 import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.netWork.model.ListaFilmes
 import com.example.filmes_.netWork.model.ListaGeneros
+import com.example.filmes_.util.ParseFilme
+import kotlinx.coroutines.flow.*
 import retrofit2.http.Query
 import java.lang.Exception
 
@@ -66,12 +71,13 @@ class FilmesRepository{
         )
     }
 
-    fun getAllFilmesFavoritados(): List<Filme?>? {
-        return bd.getAllFilmesFavoritados()?.map {
-            println("Entity ? >>>  " + it?.id)
-            it?.let {
-                Filme(it.id,it.poster_path,null,it.title,it.overview,it.favorite)
-            }
+    fun getAllFilmesFavoritados() : Flow<List<FilmeModel?>> {
+        return bd.getAllFilmesFavoritados().transform {
+            this.emit(it.map{ParseFilme.parseEntityToModel(it)})
         }
+    }
+
+    suspend fun getAllFilmesFavoritadosList() : List<FilmeModel?> {
+        return bd.getAllFilmesFavoritados().first().map { ParseFilme.parseEntityToModel(it) }
     }
 }

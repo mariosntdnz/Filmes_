@@ -36,10 +36,12 @@
         android:id="@+id/favoritosFragment"
         android:name="com.example.filmes_.ui.favoritos.FavoritosFragment"
         android:label="@string/favoritos"
-        tools:layout="@layout/fragment_favoritos" >
+        tools:layout="@layout/fragment_favoritos"
+        >
         <action
             android:id="@+id/action_favoritosFragment_to_detalhesFragment"
-            app:destination="@id/detalhesFragment" />
+            app:destination="@id/detalhesFragment"
+            />
     </fragment>
 
 </navigation>

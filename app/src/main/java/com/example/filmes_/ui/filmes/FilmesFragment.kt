@@ -50,6 +50,8 @@ class FilmesFragment : Fragment() {
             }
         })
 
+        viewModel.updateData()
+
         setFragmentResultListener("filme_KEY"){key,bundle->
             val filmeNaVoltaDetalhes = bundle.getParcelable<Filme>("filme")!!
             (binding.recyclerViewFilmes.adapter as FilmesAdapter).updateItem(ParseFilme.parseFilmeToModel(filmeNaVoltaDetalhes)!!)

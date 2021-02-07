@@ -4,6 +4,8 @@ import androidx.paging.PagingSource
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.repository.FilmesRepository
 import com.example.filmes_.util.ParseFilme
+import kotlinx.coroutines.flow.forEach
+import kotlinx.coroutines.flow.map
 
 class PostDataSource(private val apiService: FilmesRepository) : PagingSource<Int, FilmeModel>() {
 
@@ -11,14 +13,20 @@ class PostDataSource(private val apiService: FilmesRepository) : PagingSource<In
         try {
 
             val currentLoadingPageKey = params.key ?: 1
-            val response = apiService.getAllMovies(currentLoadingPageKey).results?.map {
-                ParseFilme.parseFilmeToModel(it)
+            val responseFavoritados = apiService.getAllFilmesFavoritadosList()
+            val response = apiService.getAllMovies(currentLoadingPageKey).results?.map {filme->
+               ParseFilme.parseFilmeToModel(filme)
             }
 
             val responseData = mutableListOf<FilmeModel>()
 
-            response?.map {
-                responseData.add(it!!)
+            response?.map {filme->
+
+                val isfilmeFavoritado = responseFavoritados.find { it?.id == filme?.id }
+                isfilmeFavoritado?.let {
+                    filme?.favorite?.postValue(true)
+                }
+                responseData.add(filme!!)
             }
 
             val prevKey = if (currentLoadingPageKey == 1) null else currentLoadingPageKey - 1

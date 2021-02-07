@@ -22,8 +22,8 @@ class FavoritosViewModel : ViewModel(){
 
     private val filmesRepository = FilmesRepository()
 
-    private val _filmeClicado = MutableLiveData<Filme>()
-    val filmeClicado : LiveData<Filme>
+    private val _filmeClicado = MutableLiveData<Filme?>()
+    val filmeClicado : MutableLiveData<Filme?>
         get() = _filmeClicado
 
     private val _lastFilme = MutableLiveData<Filme>()
@@ -31,8 +31,11 @@ class FavoritosViewModel : ViewModel(){
         get() = _lastFilme
 
     var dataFilmes : Flow<PagingData<FilmeModel>>
+    var dataLisFilmes : Flow<List<FilmeModel?>>
 
     init {
+
+        dataLisFilmes = filmesRepository.getAllFilmesFavoritados()
 
         dataFilmes = Pager(PagingConfig(pageSize = 6)) {
             PostDataSourceBD(filmesRepository)
@@ -49,9 +52,9 @@ class FavoritosViewModel : ViewModel(){
 
     private fun deleteFilmeFavoritado(filme : FilmeModel) = viewModelScope.launch { filmesRepository.deleteFilmeFavoritado(filme) }
 
-    private fun updateFavoriteBD(filmeModel : FilmeModel){
+    fun updateFavoriteBD(filmeModel : FilmeModel){
 
-        if(filmeModel.favorite.value!!) insertFilmeFavoritado(filmeModel)
+        if(!filmeModel.favorite.value!!) insertFilmeFavoritado(filmeModel)
         else deleteFilmeFavoritado(filmeModel)
 
     }
@@ -68,4 +71,5 @@ class FavoritosViewModel : ViewModel(){
         _lastFilme.value = _filmeClicado.value
         _filmeClicado.value = null
     }
+
 }

@@ -38,6 +38,12 @@ class FilmesViewModel : ViewModel() {
         getAllGeneros()
     }
 
+    fun updateData(){
+        dataFilmes = Pager(PagingConfig(pageSize = 6)) {
+            PostDataSource(filmesRepository)
+        }.flow.cachedIn(viewModelScope)
+    }
+
     private fun getAllGeneros(){
         viewModelScope.launch {
             try {

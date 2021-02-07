@@ -2,6 +2,7 @@ package com.example.filmes_.util
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
+import com.example.filmes_.database.entity.FilmeEntity
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.model.Filme
 import kotlinx.coroutines.flow.flow
@@ -17,7 +18,7 @@ class ParseFilme() {
                 filme.genre_ids,
                 filme.title,
                 filme.overview,
-                MutableLiveData(it.favorite)
+                MutableLiveData(filme.favorite)
             )
         }
 
@@ -29,6 +30,17 @@ class ParseFilme() {
             filmeModel.title,
             filmeModel.overview,
             filmeModel.favorite.value
+            )
+        }
+
+        fun parseEntityToModel(filmeEntity: FilmeEntity?) = filmeEntity?.let {
+            FilmeModel(
+                filmeEntity.id,
+                filmeEntity.poster_path,
+                null,
+                filmeEntity.title,
+                filmeEntity.overview,
+                MutableLiveData(filmeEntity.favorite)
             )
         }
     }
