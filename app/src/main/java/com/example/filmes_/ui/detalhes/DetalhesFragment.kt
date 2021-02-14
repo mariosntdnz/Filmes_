@@ -31,11 +31,7 @@ class DetalhesFragment : Fragment() {
         binding.filmeModel = filmeModel
 
         binding.imageViewFavorito.setOnClickListener {
-            filmeModel?.favorite?.value = !filmeModel?.favorite?.value!!
-            DetalhesFragmentArgs.fromBundle(requireArguments()).filme.favorite = filmeModel.favorite.value
-            setFragmentResult("filme_KEY", bundleOf("filme" to DetalhesFragmentArgs.fromBundle(
-                requireArguments()
-            ).filme))
+            viewModel.updateFavorite(filmeModel!!)
         }
         setHasOptionsMenu(true)
         return binding.root

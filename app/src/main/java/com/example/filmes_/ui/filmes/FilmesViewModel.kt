@@ -65,9 +65,8 @@ class FilmesViewModel : ViewModel() {
     private fun deleteFilmeFavoritado(filme : FilmeModel) = viewModelScope.launch { filmesRepository.deleteFilmeFavoritado(filme) }
 
     fun updateFavoriteBD(filmeModel : FilmeModel){
-        if(filmeModel.favorite.value!!) insertFilmeFavoritado(filmeModel)
+        if(filmesRepository.searchFilme(filmeModel.id) == null) insertFilmeFavoritado(filmeModel)
         else deleteFilmeFavoritado(filmeModel)
-
     }
 
     private fun updateFavoriteFilme(filmeModel: FilmeModel) {

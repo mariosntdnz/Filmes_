@@ -1,6 +1,7 @@
 package com.example.filmes_.netWork
 
 import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.repository.FilmesRepository
 import com.example.filmes_.util.ParseFilme
@@ -39,6 +40,10 @@ class PostDataSource(private val apiService: FilmesRepository) : PagingSource<In
         } catch (e: Exception) {
             return LoadResult.Error(e)
         }
+    }
+
+    override fun getRefreshKey(state: PagingState<Int, FilmeModel>): Int? {
+        TODO("Not yet implemented")
     }
 
 }

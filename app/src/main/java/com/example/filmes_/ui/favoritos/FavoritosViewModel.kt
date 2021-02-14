@@ -25,9 +25,7 @@ class FavoritosViewModel : ViewModel(){
     var dataLisFilmes : Flow<List<FilmeModel?>>
 
     init {
-
         dataLisFilmes = filmesRepository.getAllFilmesFavoritados()
-
     }
 
     fun updateFavorite(filmeModel : FilmeModel){
@@ -41,7 +39,7 @@ class FavoritosViewModel : ViewModel(){
 
     fun updateFavoriteBD(filmeModel : FilmeModel){
 
-        if(!filmeModel.favorite.value!!) insertFilmeFavoritado(filmeModel)
+        if(filmesRepository.searchFilme(filmeModel.id) == null) insertFilmeFavoritado(filmeModel)
         else deleteFilmeFavoritado(filmeModel)
 
     }

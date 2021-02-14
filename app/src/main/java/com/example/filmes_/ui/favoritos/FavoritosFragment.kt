@@ -50,12 +50,6 @@ class FavoritosFragment : Fragment() {
             }
         })
 
-        setFragmentResultListener("filme_KEY"){key,bundle->
-            val filmeNaVoltaDetalhes = bundle.getParcelable<Filme>("filme")!!
-            filmeNaVoltaDetalhes.favorite = !filmeNaVoltaDetalhes.favorite!!
-            viewModel.updateFavoriteBD(ParseFilme.parseFilmeToModel(filmeNaVoltaDetalhes)!!)
-        }
-
         setHasOptionsMenu(true)
 
         return binding.root
