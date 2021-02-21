@@ -2,6 +2,8 @@ package com.example.filmes_.netWork.repository
 
 import com.example.filmes_.core.MyApplication
 import com.example.filmes_.database.entity.FilmeEntity
+import com.example.filmes_.database.entity.FilmeWithGenero
+import com.example.filmes_.database.entity.GeneroIDEntity
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.FilmesRestService
 import com.example.filmes_.netWork.model.Filme
@@ -45,7 +47,15 @@ class FilmesRepository{
         }
     }
 
+    private fun getGeneroIDListFromFilme(filme: FilmeModel) : List<GeneroIDEntity>?{
+        return filme.genre_ids?.map {
+            GeneroIDEntity(null,filme.id,it!!)
+        }
+
+    }
+
     fun insertFilmeFavoritado(filme: FilmeModel) {
+
         bd.insertFilmeFavoritado(
             FilmeEntity(
                 filme.id,
@@ -55,7 +65,14 @@ class FilmesRepository{
                 filme.favorite.value
             )
         )
+
+        getGeneroIDListFromFilme(filme)?.let {
+
+            bd.insertGeneroIDList(it)
+        }
+
     }
+
     fun deleteFilmeFavoritado(filme: FilmeModel) {
         bd.deleteFilmeFavoritado(
             FilmeEntity(
@@ -76,5 +93,18 @@ class FilmesRepository{
 
     suspend fun getAllFilmesFavoritadosList() : List<FilmeModel?> {
         return bd.getAllFilmesFavoritados().first().map { ParseFilme.parseEntityToModel(it) }
+    }
+
+    fun getFilmeWithGenero(): Flow<List<FilmeModel?>>{
+        return bd.getFilmeWithGenero().transform { it ->
+            this.emit(
+                it.map {
+                    val filme = ParseFilme.parseEntityToModel(it.filmeEntity)
+                    val genero = it.listGeneroIDsEntity
+                    filme?.genre_ids = genero.map { it.generoId }
+                    filme
+                }
+            )
+        }
     }
 }

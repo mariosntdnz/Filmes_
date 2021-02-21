@@ -29,7 +29,6 @@ fun bindImage(imgView : ImageView, imgUrl : String){
 
 @BindingAdapter("isFavorite")
 fun bindIsFavorite(imgView: ImageView, isFavorite : Boolean){
-    println("Chamado ___" + isFavorite.toString())
     if(isFavorite) imgView.setImageResource(R.drawable.ic_baseline_star_24)
     else           imgView.setImageResource(R.drawable.ic_baseline_star_border_24)
 }

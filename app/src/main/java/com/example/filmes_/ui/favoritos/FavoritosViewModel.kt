@@ -8,6 +8,7 @@ import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.model.Filme
 import com.example.filmes_.netWork.repository.FilmesRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class FavoritosViewModel : ViewModel(){
@@ -22,10 +23,11 @@ class FavoritosViewModel : ViewModel(){
     val lastFilme : LiveData<Filme>
         get() = _lastFilme
 
-    var dataLisFilmes : Flow<List<FilmeModel?>>
+    var dataListFilmes : Flow<List<FilmeModel?>>
 
     init {
-        dataLisFilmes = filmesRepository.getAllFilmesFavoritados()
+        //dataLisFilmes = filmesRepository.getAllFilmesFavoritados()
+        dataListFilmes = filmesRepository.getFilmeWithGenero()
     }
 
     fun updateFavorite(filmeModel : FilmeModel){

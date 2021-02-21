@@ -38,7 +38,7 @@ class FavoritosFragment : Fragment() {
         binding.recyclerViewFavoritos.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.dataLisFilmes.collect { filmes ->
+            viewModel.dataListFilmes.collect { filmes ->
                 adapter.submitList(filmes)
             }
         }

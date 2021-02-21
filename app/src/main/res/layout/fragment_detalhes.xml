@@ -37,6 +37,16 @@
             app:layout_constraintGuide_percent="0.6" />
 
         <TextView
+            android:id="@+id/textViewGeneros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@{viewModel.getGenerosFormatados(filmeModel)}"
+            app:layout_constraintBottom_toTopOf="@+id/textViewSinopse"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline5" />
+
+        <TextView
             android:id="@+id/textViewSinopse"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

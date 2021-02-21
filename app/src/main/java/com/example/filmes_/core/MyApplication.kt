@@ -13,6 +13,6 @@ open class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         //Room
-        database = Room.databaseBuilder(this, AppDatabase::class.java, "my-db").allowMainThreadQueries().build()
+        database = Room.databaseBuilder(this, AppDatabase::class.java, "my-db-filme").allowMainThreadQueries().build()
     }
 }

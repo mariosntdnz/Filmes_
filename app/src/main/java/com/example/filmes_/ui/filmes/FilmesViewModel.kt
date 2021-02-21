@@ -19,6 +19,8 @@ class FilmesViewModel : ViewModel() {
     val responseGeneros : LiveData<ListaGeneros?>
         get() = _responseGeneros
 
+   val hashMapGeneros = HashMap<Int?,String?>()
+
     private val _filmeClicado = MutableLiveData<Filme?>()
     val filmeClicado : MutableLiveData<Filme?>
         get() = _filmeClicado
@@ -35,7 +37,7 @@ class FilmesViewModel : ViewModel() {
             PostDataSource(filmesRepository)
         }.flow.cachedIn(viewModelScope)
 
-        getAllGeneros()
+        generateMapGeneros()
     }
 
     fun updateData(){
@@ -44,6 +46,22 @@ class FilmesViewModel : ViewModel() {
         }.flow.cachedIn(viewModelScope)
     }
 
+    private fun generateMapGeneros(){
+        getAllGeneros()
+        _responseGeneros.value?.generos?.forEach {
+            it?.let {
+                hashMapGeneros[it.id] = it.name
+            }
+        }
+    }
+
+    fun getGenero(ids : List<Int>): MutableList<String> {
+        val generos : MutableList<String> = mutableListOf()
+        ids.forEachIndexed { index, i ->
+            generos[index] = hashMapGeneros[i]!!
+        }
+        return generos
+    }
     private fun getAllGeneros(){
         viewModelScope.launch {
             try {

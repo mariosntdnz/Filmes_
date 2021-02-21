@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.filmes_.databinding.FragmentDetalhesBinding
 import com.example.filmes_.ui.detalhes.DetalhesFragmentArgs
@@ -33,6 +34,10 @@ class DetalhesFragment : Fragment() {
         binding.imageViewFavorito.setOnClickListener {
             viewModel.updateFavorite(filmeModel!!)
         }
+        viewModel.responseGeneros.observe(viewLifecycleOwner, Observer {
+            viewModel.generateMapGeneros()
+            binding.textViewGeneros.text = viewModel.getGenerosFormatados(binding.filmeModel!!)
+        })
         setHasOptionsMenu(true)
         return binding.root
     }
