@@ -2,7 +2,7 @@
 
 Tecnologias do Android usadas :</Br>
   * Kotlin</Br>
-  * Data Bindind</Br>
+  * Data Binding</Br>
   * Room DataBase</Br>
   * Retrofit</Br>
   * ViewModel</Br>
