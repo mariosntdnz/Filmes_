@@ -1,4 +1,4 @@
-<p>Aplicativo que a partir de uma requisição traz uma lista de filmes onde é possivél ver o gênero,sinopse e separar seus filmes favoritos.</p>
+<p>Aplicativo que a partir de uma requisição traz uma lista de filmes onde é possível ver o gênero,sinopse e separar seus filmes favoritos.</p>
 
 Tecnologias do Android usadas :</Br>
   * Kotlin</Br>
