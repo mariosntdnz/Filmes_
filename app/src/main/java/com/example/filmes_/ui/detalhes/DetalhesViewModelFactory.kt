@@ -1,0 +1,13 @@
+package com.example.filmes_.ui.detalhes
+
+import android.app.Application
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+
+class DetalhesViewModelFactory(private val  application: Application) :  ViewModelProvider.NewInstanceFactory() {
+
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return DetalhesViewModel(application) as T
+    }
+
+}

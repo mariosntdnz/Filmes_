@@ -1,5 +1,7 @@
 package com.example.filmes_.ui.detalhes
 
+import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,21 +9,27 @@ import androidx.lifecycle.viewModelScope
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.model.ListaGeneros
 import com.example.filmes_.netWork.repository.FilmesRepository
+import com.example.filmes_.util.Parse
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.ArrayList
 
-class DetalhesViewModel : ViewModel() {
+class DetalhesViewModel(application: Application) : ViewModel() {
     private val filmesRepository = FilmesRepository()
 
     private val _responseGeneros = MutableLiveData<ListaGeneros?>()
     val responseGeneros : LiveData<ListaGeneros?>
         get() = _responseGeneros
 
-    val hashMapGeneros = HashMap<Int?,String?>()
-
     init {
-        getAllGeneros()
+        val prefs = application.getSharedPreferences("com.example.filmes_", Context.MODE_PRIVATE)
+
+        if(!prefs.getBoolean("genrerIsStored",false)){
+            prefs.edit().putBoolean("genrerIsStored",true).apply()
+            viewModelScope.launch {
+                filmesRepository.insertGenresBD()
+            }
+        }
     }
 
     fun updateFavorite(filmeModel : FilmeModel){
@@ -39,34 +47,17 @@ class DetalhesViewModel : ViewModel() {
         else deleteFilmeFavoritado(filmeModel)
 
     }
-    fun generateMapGeneros(){
-        _responseGeneros.value?.generos?.forEach {
-            it?.let {
-                hashMapGeneros[it.id] = it.name
-            }
-        }
-    }
 
     fun getGeneros(ids : List<Int>): MutableList<String> {
         val generos = ArrayList<String>()
-        ids.forEach { i ->
-            generos.add(hashMapGeneros[i].toString())
+        val generosBd = Parse.parseGenreEntityListToGenero(filmesRepository.getGenresBD(ids))
+        generosBd.map {
+            it.name?.let { it1 -> generos.add(it1) }
         }
         return generos
     }
 
     fun getGenerosFormatados(filmeModel: FilmeModel) = getGeneros(filmeModel.genre_ids?.filterNotNull()!!).joinToString(" | ")
-
-    private fun getAllGeneros(){
-        viewModelScope.launch {
-            try {
-                _responseGeneros.value = filmesRepository.getAllGenres()
-            }
-            catch (e : Exception){
-                _responseGeneros.value = null
-            }
-        }
-    }
 
     private fun updateFavoriteFilme(filmeModel: FilmeModel) {
         filmeModel.favorite.value = !filmeModel.favorite.value!!

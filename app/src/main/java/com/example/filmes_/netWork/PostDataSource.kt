@@ -4,9 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.repository.FilmesRepository
-import com.example.filmes_.util.ParseFilme
-import kotlinx.coroutines.flow.forEach
-import kotlinx.coroutines.flow.map
+import com.example.filmes_.util.Parse
 
 class PostDataSource(private val apiService: FilmesRepository) : PagingSource<Int, FilmeModel>() {
 
@@ -16,7 +14,7 @@ class PostDataSource(private val apiService: FilmesRepository) : PagingSource<In
             val currentLoadingPageKey = params.key ?: 1
             val responseFavoritados = apiService.getAllFilmesFavoritadosList()
             val response = apiService.getAllMovies(currentLoadingPageKey).results?.map {filme->
-               ParseFilme.parseFilmeToModel(filme)
+               Parse.parseFilmeToModel(filme)
             }
 
             val responseData = mutableListOf<FilmeModel>()

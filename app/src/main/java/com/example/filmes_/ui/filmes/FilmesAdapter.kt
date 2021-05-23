@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.filmes_.databinding.FilmesItemBinding
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.model.Filme
-import com.example.filmes_.util.ParseFilme
+import com.example.filmes_.util.Parse
 import kotlinx.android.synthetic.main.filmes_item.view.*
 
 class FilmesAdapter(private val onClickListener: OnClickListener) : PagingDataAdapter<FilmeModel,FilmesAdapter.FilmeViewHolder>(DiffCallback){
@@ -43,7 +43,7 @@ class FilmesAdapter(private val onClickListener: OnClickListener) : PagingDataAd
         val filmeModel = getItem(position)
 
         holder.itemView.imageViewFotoCelular.setOnClickListener {
-            ParseFilme.parseModelToFilme(filmeModel!!)?.let { it1 -> onClickListener.onClick(it1) }
+            Parse.parseModelToFilme(filmeModel!!)?.let { it1 -> onClickListener.onClick(it1) }
         }
         holder.itemView.imageViewFavoriteRecy.setOnClickListener {
             onClickListener.onClickFavorite(filmeModel!!)

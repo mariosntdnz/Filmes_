@@ -2,17 +2,10 @@ package com.example.filmes_.ui.filmes
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
-import com.example.filmes_.R
 import com.example.filmes_.databinding.FragmentFilmesBinding
-import com.example.filmes_.netWork.model.Filme
-import com.example.filmes_.util.ParseFilme
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 

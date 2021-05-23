@@ -3,11 +3,13 @@ package com.example.filmes_.util
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.example.filmes_.database.entity.FilmeEntity
+import com.example.filmes_.database.entity.GeneroEntity
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.model.Filme
+import com.example.filmes_.netWork.model.Genero
 import kotlinx.coroutines.flow.flow
 
-class ParseFilme() {
+class Parse() {
 
     companion object{
 
@@ -42,6 +44,24 @@ class ParseFilme() {
                 filmeEntity.overview,
                 MutableLiveData(filmeEntity.favorite)
             )
+        }
+
+        fun parseGenreListToEntity(genre : List<Genero?>?) : List<GeneroEntity>?{
+            return genre?.map {
+                GeneroEntity(
+                    it?.id,
+                    it?.name
+                )
+            }
+        }
+
+        fun parseGenreEntityListToGenero(genre : List<GeneroEntity>) : List<Genero>{
+            return genre.map {
+                Genero(
+                    it.id,
+                    it.name
+                )
+            }
         }
     }
 }

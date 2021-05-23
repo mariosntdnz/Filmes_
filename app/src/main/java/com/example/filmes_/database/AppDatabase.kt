@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.filmes_.MainActivity
 import com.example.filmes_.database.dao.FilmeDao
+import com.example.filmes_.database.dao.GeneroDao
 import com.example.filmes_.database.entity.FilmeEntity
 import com.example.filmes_.database.entity.FilmeWithGenero
 import com.example.filmes_.database.entity.GeneroEntity
@@ -22,6 +23,7 @@ import com.example.filmes_.database.entity.GeneroIDEntity
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun filmeDao() : FilmeDao
+    abstract fun generoDao() : GeneroDao
 
     companion object {
         @Volatile

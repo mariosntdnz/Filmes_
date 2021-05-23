@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.filmes_.databinding.FavoritoItemBinding
 import com.example.filmes_.domain.FilmeModel
 import com.example.filmes_.netWork.model.Filme
-import com.example.filmes_.util.ParseFilme
+import com.example.filmes_.util.Parse
 import kotlinx.android.synthetic.main.filmes_item.view.*
 
 class FavoritosAdapter(private val onClickListener: OnClickListener) : ListAdapter<FilmeModel, FavoritosAdapter.FavoritosViewHolder>(DiffCallback){
@@ -43,7 +43,7 @@ class FavoritosAdapter(private val onClickListener: OnClickListener) : ListAdapt
         val filmeModel = getItem(position)
 
         holder.itemView.imageViewFotoCelular.setOnClickListener {
-            ParseFilme.parseModelToFilme(filmeModel!!)?.let { it -> onClickListener.onClick(it) }
+            Parse.parseModelToFilme(filmeModel!!)?.let { it -> onClickListener.onClick(it) }
         }
         holder.itemView.imageViewFavoriteRecy.setOnClickListener {
             onClickListener.onClickFavorite(filmeModel!!)
